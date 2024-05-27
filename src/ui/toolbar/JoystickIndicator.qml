@@ -74,12 +74,13 @@ Item {
                         enabled:            true
                         text:               _joystickEnabled ? qsTr("Disable") : qsTr("Enable")
                         onClicked: {
-                            if (_joystickEnabled) {
-                                globals.activeVehicle.setJoystickEnabled(false)
-                            } else {
-                                globals.activeVehicle.setJoystickEnabled(true)
-                            }
-                            // close popup
+                            globals.guidedControllerFlyView.executeAction(
+                                globals.guidedControllerFlyView.actionJoystickChangeStatus,
+                                !_joystickEnabled,
+                                null,
+                                null
+                            )
+
                             mainWindow.hideIndicatorPopup()
                         }
                     }

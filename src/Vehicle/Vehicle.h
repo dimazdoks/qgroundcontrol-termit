@@ -489,7 +489,9 @@ public:
     void updateFlightDistance(double distance);
 
     bool joystickEnabled            () const;
-    void setJoystickEnabled         (bool enabled);
+    // idk what the fuck, but it's working...
+    // void setJoystickEnabled         (bool enabled);
+    Q_INVOKABLE void setJoystickEnabled (bool enabled);
     void sendJoystickDataThreadSafe (float roll, float pitch, float yaw, float thrust, quint16 buttons);
 
     // Property accesors

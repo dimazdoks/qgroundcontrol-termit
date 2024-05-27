@@ -111,6 +111,7 @@ Item {
     readonly property int actionChangeSpeed:                25
     readonly property int actionGripper:                    26
     readonly property int actionSetHome:                    27
+    readonly property int actionJoystickChangeStatus:       28
 
     property var    _activeVehicle:             QGroundControl.multiVehicleManager.activeVehicle
     property bool   _useChecklist:              QGroundControl.settingsManager.appSettings.useChecklist.rawValue && QGroundControl.corePlugin.options.preFlightChecklistUrl.toString().length
@@ -615,6 +616,8 @@ Item {
             break
         case actionSetHome:
             _activeVehicle.doSetHome(actionData)
+        case actionJoystickChangeStatus:
+            _activeVehicle.setJoystickEnabled(actionData)
             break
         default:
             console.warn(qsTr("Internal error: unknown actionCode"), actionCode)
