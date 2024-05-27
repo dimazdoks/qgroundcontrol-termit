@@ -22,7 +22,11 @@ Item {
     width:          joystickRow.width * 1.1
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
-    visible:        globals.activeVehicle ? globals.activeVehicle.sub : false
+    // visible:        globals.activeVehicle ? globals.activeVehicle.sub : false
+    // visible:        globals.activeVehicle ? globals.activeVehicle.rover : false
+
+    property bool showIndicator:    true
+    property bool _joystickEnabled: globals.activeVehicle ? globals.activeVehicle.joystickEnabled : false
 
 
     Component {
@@ -65,6 +69,22 @@ Item {
                     QGCLabel {
                         text:  globals.activeVehicle && globals.activeVehicle.joystickEnabled ? qsTr("Yes") : qsTr("No")
                         color: globals.activeVehicle && globals.activeVehicle.joystickEnabled ? qgcPal.buttonText : "red"
+                    }
+
+                    QGCButton {
+                        Layout.leftMargin:  width / 2
+                        Layout.alignment:   Qt.AlignHCenter
+                        enabled:            true
+                        text:               _joystickEnabled ? qsTr("Disable") : qsTr("Enable")
+                        onClicked: {
+                            if (_joystickEnabled) {
+                                globals.activeVehicle.setJoystickEnabled(false)
+                            } else {
+                                globals.activeVehicle.setJoystickEnabled(true)
+                            }
+                            // close popup
+                            mainWindow.hideIndicatorPopup()
+                        }
                     }
                 }
             }
