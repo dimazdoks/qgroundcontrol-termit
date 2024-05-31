@@ -19,15 +19,14 @@ import QGroundControl.Palette               1.0
 // Joystick Indicator
 Item {
     id:             _root
-    width:          joystickRow.width * 1.1
+    width:          nightLightRow.width * 1.1
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
     property bool showIndicator:    true
-    property bool _joystickEnabled: globals.activeVehicle ? globals.activeVehicle.joystickEnabled : false
 
     Row {
-        id:             lightRow
+        id:             nightLightRow
         anchors.top:    parent.top
         anchors.bottom: parent.bottom
         spacing:        ScreenTools.defaultFontPixelWidth
@@ -37,7 +36,7 @@ Item {
             anchors.top:        parent.top
             anchors.bottom:     parent.bottom
             sourceSize.height:  height
-            source:             "/qmlimages/SimpleLight.png"
+            source:             "/qmlimages/NightLight.png"
             fillMode:           Image.PreserveAspectFit
             color: {
                 if(globals.activeVehicle && joystickManager.activeJoystick) {

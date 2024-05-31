@@ -19,15 +19,14 @@ import QGroundControl.Palette               1.0
 // Joystick Indicator
 Item {
     id:             _root
-    width:          joystickRow.width * 1.1
+    width:          dayLightRow.width * 1.1
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
     property bool showIndicator:    true
-    property bool _joystickEnabled: globals.activeVehicle ? globals.activeVehicle.joystickEnabled : false
 
     Row {
-        id:             lightRow
+        id:             dayLightRow
         anchors.top:    parent.top
         anchors.bottom: parent.bottom
         spacing:        ScreenTools.defaultFontPixelWidth
