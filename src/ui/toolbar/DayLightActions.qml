@@ -23,8 +23,10 @@ Item {
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
+    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+
     property bool showIndicator:  true
-    property bool dayLightStatus: false
+    property bool dayLightState: _activeVehicle.dayLightState()
 
     Row {
         id:             dayLightRow
@@ -40,7 +42,10 @@ Item {
             source:             "/qmlimages/SimpleLight.png"
             fillMode:           Image.PreserveAspectFit
             color: {
-                if (dayLightStatus) {
+                const state = _activeVehicle.dayLightState();
+                console.log(state)
+
+                if (state) {
                     return "yellow"
                 }
 
@@ -52,15 +57,16 @@ Item {
     MouseArea {
         anchors.fill:   parent
         onClicked: {
-            // mainWindow.showIndicatorPopup(_root, joystickInfo)
-            dayLightStatus = !dayLightStatus
-
             globals.guidedControllerFlyView.executeAction(
                 globals.guidedControllerFlyView.dayLightToggle,
                 null,
                 null,
                 null
             )
+
+            console.log('after click');
+            console.log(_activeVehicle.dayLightState());
+
         }
     }
 }

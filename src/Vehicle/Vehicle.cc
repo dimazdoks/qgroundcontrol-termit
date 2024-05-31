@@ -2158,6 +2158,16 @@ void Vehicle::resetErrorLevelMessages()
     }
 }
 
+bool Vehicle::nightLightState()
+{
+    return _servoControl->nightLightState();
+}
+
+bool Vehicle::dayLightState()
+{
+    return _servoControl->dayLightState();
+}
+
 void Vehicle::toggleDayLight()
 {
     _servoControl->toggleDayLight(_defaultComponentId);

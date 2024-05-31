@@ -23,8 +23,10 @@ Item {
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
+    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+
     property bool showIndicator:    true
-    property bool nightLightStatus: false
+    property bool nightLightState: _activeVehicle.nightLightState
 
 
     Row {
@@ -41,7 +43,7 @@ Item {
             source:             "/qmlimages/NightLight.png"
             fillMode:           Image.PreserveAspectFit
             color: {
-                if (nightLightStatus) {
+                if (nightLightState) {
                     return "yellow"
                 }
 
@@ -53,9 +55,6 @@ Item {
     MouseArea {
         anchors.fill:   parent
         onClicked: {
-            // mainWindow.showIndicatorPopup(_root, joystickInfo)
-            nightLightStatus = !nightLightStatus
-
             globals.guidedControllerFlyView.executeAction(
                 globals.guidedControllerFlyView.nightLightToggle,
                 null,

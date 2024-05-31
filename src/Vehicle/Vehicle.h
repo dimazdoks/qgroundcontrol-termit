@@ -489,8 +489,10 @@ public:
 
     void updateFlightDistance(double distance);
 
-    Q_INVOKABLE void toggleDayLight ();
+    Q_INVOKABLE void toggleDayLight   ();
     Q_INVOKABLE void toggleNightLight ();
+    Q_INVOKABLE bool dayLightState();
+    Q_INVOKABLE bool nightLightState();
 
     bool joystickEnabled            () const;
     // idk what the fuck, but it's working...
