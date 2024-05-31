@@ -9,9 +9,8 @@
 
 
 #include<iostream>
-
-#include "ServoControl.h"
 #include "Vehicle.h"
+#include "ServoControl.h"
 
 #define SERVO_PWM_ON  2000
 #define SERVO_PWM_OFF 1000
@@ -23,22 +22,24 @@
 ServoControl::ServoControl(QObject *parent, Vehicle *vehicle)
         : QObject(parent), _vehicle(vehicle)
 {
+    connect(_vehicle, &Vehicle::servoChannelsChanged, this, &ServoControl::_servoChannelsChanged);
 }
 
-void
-ServoControl::toggleDayLight(int _defaultComponentId) {
+void ServoControl::_servoChannelsChanged(int pwmServoValues[cMaxServoPackets]) {
+    std::cout << pwmServoValues[2] << std::endl; 
+}
+
+void ServoControl::toggleDayLight(int _defaultComponentId) {
     std::cout << "test" << std::endl;
     dayLightEnable(_defaultComponentId);
 };
 
-void
-ServoControl::toggleNightLight(int _defaultComponentId) {
+void ServoControl::toggleNightLight(int _defaultComponentId) {
     nightLightEnable(_defaultComponentId);
 };
 
 // ----------------------------------------------------------------------------
-void
-ServoControl::dayLightEnable(int _defaultComponentId) {
+void ServoControl::dayLightEnable(int _defaultComponentId) {
     // _defaultComponentId
     _vehicle->sendCommand(
         _defaultComponentId,
@@ -50,8 +51,7 @@ ServoControl::dayLightEnable(int _defaultComponentId) {
 };
 
 // ----------------------------------------------------------------------------
-void
-ServoControl::dayLightDisable(int _defaultComponentId) {
+void ServoControl::dayLightDisable(int _defaultComponentId) {
     // _defaultComponentId
     _vehicle->sendCommand(
         _defaultComponentId,
@@ -63,8 +63,7 @@ ServoControl::dayLightDisable(int _defaultComponentId) {
 };
 
 // ----------------------------------------------------------------------------
-void
-ServoControl::nightLightEnable(int _defaultComponentId) {
+void ServoControl::nightLightEnable(int _defaultComponentId) {
     // _defaultComponentId
     _vehicle->sendCommand(
         _defaultComponentId,
@@ -76,8 +75,7 @@ ServoControl::nightLightEnable(int _defaultComponentId) {
 };
 
 // ----------------------------------------------------------------------------
-void
-ServoControl::nightLightDisable(int _defaultComponentId) {
+void ServoControl::nightLightDisable(int _defaultComponentId) {
     // _defaultComponentId
     _vehicle->sendCommand(
         _defaultComponentId,
