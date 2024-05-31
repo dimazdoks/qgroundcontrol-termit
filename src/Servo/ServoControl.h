@@ -29,6 +29,15 @@ public:
     Q_INVOKABLE void toggleDayLight(int);
     Q_INVOKABLE void toggleNightLight(int);
 
+    void setDayLight(int);
+    void setNightLight(int);
+
+    bool dayLightState();
+    bool nightLightState();
+
+    bool _dayLightState = false;
+    bool _nightLightState = false;
+
     void dayLightEnable(int);
     void dayLightDisable(int);
     void nightLightEnable(int);

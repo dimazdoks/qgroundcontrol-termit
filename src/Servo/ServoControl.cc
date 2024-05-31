@@ -26,16 +26,42 @@ ServoControl::ServoControl(QObject *parent, Vehicle *vehicle)
 }
 
 void ServoControl::_servoChannelsChanged(int pwmServoValues[cMaxServoPackets]) {
-    std::cout << pwmServoValues[2] << std::endl; 
+    setDayLight(pwmServoValues[DAY_LIGHT_SERVO - 1]);
+    setNightLight(pwmServoValues[NIGHT_LIGHT_SERVO - 1]);
+}
+
+void ServoControl::setDayLight(int pwmValue) {
+    _dayLightState = pwmValue > 1500 ? true : false;
+}
+
+void ServoControl::setNightLight(int pwmValue) {
+    _nightLightState = pwmValue > 1500 ? true : false;
+}
+
+bool ServoControl::dayLightState()
+{
+    return _dayLightState;
+}
+
+bool ServoControl::nightLightState()
+{
+    return _nightLightState;
 }
 
 void ServoControl::toggleDayLight(int _defaultComponentId) {
-    std::cout << "test" << std::endl;
-    dayLightEnable(_defaultComponentId);
+    if (dayLightState()) {
+        dayLightDisable(_defaultComponentId);
+    } else {
+        dayLightEnable(_defaultComponentId);
+    }
 };
 
 void ServoControl::toggleNightLight(int _defaultComponentId) {
-    nightLightEnable(_defaultComponentId);
+    if (nightLightState()) {
+        nightLightDisable(_defaultComponentId);
+    } else {
+        nightLightEnable(_defaultComponentId);
+    }
 };
 
 // ----------------------------------------------------------------------------
