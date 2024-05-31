@@ -24,6 +24,8 @@ Item {
     anchors.bottom: parent.bottom
 
     property bool showIndicator:    true
+    property bool nightLightStatus: false
+
 
     Row {
         id:             nightLightRow
@@ -39,17 +41,27 @@ Item {
             source:             "/qmlimages/NightLight.png"
             fillMode:           Image.PreserveAspectFit
             color: {
-                if(globals.activeVehicle && joystickManager.activeJoystick) {
-                    if(globals.activeVehicle.joystickEnabled) {
-                        // Everything ready to use joystick
-                        return qgcPal.buttonText
-                    }
-                    // Joystick is not enabled in the joystick configuration page
+                if (nightLightStatus) {
                     return "yellow"
                 }
-                // Joystick not available or there is no active vehicle
-                return "red"
+
+                return qgcPal.buttonText
             }
+        }
+    }
+
+    MouseArea {
+        anchors.fill:   parent
+        onClicked: {
+            // mainWindow.showIndicatorPopup(_root, joystickInfo)
+            nightLightStatus = !nightLightStatus
+
+            globals.guidedControllerFlyView.executeAction(
+                globals.guidedControllerFlyView.nightLightToggle,
+                null,
+                null,
+                null
+            )
         }
     }
 }

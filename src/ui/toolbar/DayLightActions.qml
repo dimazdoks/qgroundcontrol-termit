@@ -23,7 +23,8 @@ Item {
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
-    property bool showIndicator:    true
+    property bool showIndicator:  true
+    property bool dayLightStatus: false
 
     Row {
         id:             dayLightRow
@@ -39,17 +40,27 @@ Item {
             source:             "/qmlimages/SimpleLight.png"
             fillMode:           Image.PreserveAspectFit
             color: {
-                if(globals.activeVehicle && joystickManager.activeJoystick) {
-                    if(globals.activeVehicle.joystickEnabled) {
-                        // Everything ready to use joystick
-                        return qgcPal.buttonText
-                    }
-                    // Joystick is not enabled in the joystick configuration page
+                if (dayLightStatus) {
                     return "yellow"
                 }
-                // Joystick not available or there is no active vehicle
-                return "red"
+
+                return qgcPal.buttonText
             }
+        }
+    }
+
+    MouseArea {
+        anchors.fill:   parent
+        onClicked: {
+            // mainWindow.showIndicatorPopup(_root, joystickInfo)
+            dayLightStatus = !dayLightStatus
+
+            globals.guidedControllerFlyView.executeAction(
+                globals.guidedControllerFlyView.dayLightToggle,
+                null,
+                null,
+                null
+            )
         }
     }
 }

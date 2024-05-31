@@ -6,6 +6,7 @@
  * COPYING.md in the root of the source code directory.
  *
  ****************************************************************************/
+#include<iostream>
 
 #include <QTime>
 #include <QDateTime>
@@ -391,6 +392,7 @@ void Vehicle::_commonInit()
     _ftpManager                     = new FTPManager                    (this);
     _imageProtocolManager           = new ImageProtocolManager          ();
     _vehicleLinkManager             = new VehicleLinkManager            (this);
+    _servoControl                   = new ServoControl                  (this, this);
 
     connect(_standardModes, &StandardModes::modesUpdated, this, &Vehicle::flightModesChanged);
     connect(_standardModes, &StandardModes::modesUpdated, this, [this](){ Vehicle::flightModeChanged(flightMode()); });
@@ -2118,6 +2120,16 @@ void Vehicle::resetErrorLevelMessages()
     }
 }
 
+void Vehicle::toggleDayLight()
+{
+    _servoControl->toggleDayLight(_defaultComponentId);
+}
+
+void Vehicle::toggleNightLight()
+{
+    _servoControl->toggleNightLight(_defaultComponentId);
+}
+
 // this function called in three cases:
 // 1. On constructor of vehicle, to see if we should enable a joystick
 // 2. When there is a new active joystick
@@ -2985,6 +2997,8 @@ void Vehicle::sendMavCommand(int compId, MAV_CMD command, bool showError, float 
 
 void Vehicle::sendCommand(int compId, int command, bool showError, double param1, double param2, double param3, double param4, double param5, double param6, double param7)
 {
+    std::cout << "send command " << command << std::endl;
+
     sendMavCommand(
                 compId, static_cast<MAV_CMD>(command),
                 showError,

@@ -49,6 +49,7 @@
 #include "HealthAndArmingCheckReport.h"
 #include "TerrainQuery.h"
 #include "StandardModes.h"
+#include "ServoControl.h"
 #include "VehicleGeneratorFactGroup.h"
 #include "VehicleEFIFactGroup.h"
 
@@ -487,6 +488,9 @@ public:
     QGeoCoordinate armedPosition    () { return _armedPosition; }
 
     void updateFlightDistance(double distance);
+
+    Q_INVOKABLE void toggleDayLight ();
+    Q_INVOKABLE void toggleNightLight ();
 
     bool joystickEnabled            () const;
     // idk what the fuck, but it's working...
@@ -1445,6 +1449,7 @@ private:
     Actuators*                      _actuators                  = nullptr;
     RemoteIDManager*                _remoteIDManager            = nullptr;
     StandardModes*                  _standardModes              = nullptr;
+    ServoControl*                   _servoControl               = nullptr;
 
     static const char* _rollFactName;
     static const char* _pitchFactName;

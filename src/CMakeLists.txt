@@ -134,6 +134,7 @@ add_subdirectory(FlightMap)
 add_subdirectory(FollowMe)
 add_subdirectory(Geo)
 add_subdirectory(GPS)
+add_subdirectory(Servo)
 add_subdirectory(Joystick)
 if (${QGC_GST_MICROHARD_ENABLED})
   add_subdirectory(Microhard)
@@ -178,6 +179,7 @@ target_link_libraries(qgc
 		Geo
 		gps
 		Joystick
+		ServoControl
 		MissionManager
 		PositionManager
 		QmlControls
