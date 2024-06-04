@@ -85,6 +85,8 @@ add_library(Vehicle
 	VehicleLocalPositionSetpointFactGroup.h
 	VehicleGPSFactGroup.cc
 	VehicleGPSFactGroup.h
+	VehicleServoFactGroup.cc
+	VehicleServoFactGroup.h
 	VehicleGPS2FactGroup.cc
 	VehicleGPS2FactGroup.h
 	VehicleGeneratorFactGroup.cc

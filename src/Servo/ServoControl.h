@@ -22,21 +22,10 @@ class ServoControl : public QObject
 Q_OBJECT
 
 public:
-    static const int cMaxServoPackets = 16;
-
     ServoControl(QObject* parent, Vehicle* vehicle);
 
-    Q_INVOKABLE void toggleDayLight(int);
-    Q_INVOKABLE void toggleNightLight(int);
-
-    void setDayLight(int);
-    void setNightLight(int);
-
-    bool dayLightState();
-    bool nightLightState();
-
-    bool _dayLightState = false;
-    bool _nightLightState = false;
+    Q_INVOKABLE void setDayLightEnabled(bool, int);
+    Q_INVOKABLE void setNightLightEnabled(bool, int);
 
     void dayLightEnable(int);
     void dayLightDisable(int);
@@ -44,7 +33,5 @@ public:
     void nightLightDisable(int);
 private:
     Vehicle* _vehicle;
-private slots:
-    void _servoChannelsChanged(int pwmServoValues[cMaxServoPackets]);
 };
 

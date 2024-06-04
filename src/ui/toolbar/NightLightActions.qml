@@ -23,11 +23,9 @@ Item {
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
-    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
-
-    property bool showIndicator:    true
-    property bool nightLightState: _activeVehicle.nightLightState
-
+    property var _activeVehicle:      QGroundControl.multiVehicleManager.activeVehicle
+    property bool showIndicator:      true
+    property bool _nightLightEnabled: _activeVehicle ? _activeVehicle.servo.nightLight.value : false
 
     Row {
         id:             nightLightRow
@@ -43,7 +41,7 @@ Item {
             source:             "/qmlimages/NightLight.png"
             fillMode:           Image.PreserveAspectFit
             color: {
-                if (nightLightState) {
+                if (_activeVehicle.servo.nightLight.value) {
                     return "yellow"
                 }
 
@@ -56,8 +54,8 @@ Item {
         anchors.fill:   parent
         onClicked: {
             globals.guidedControllerFlyView.executeAction(
-                globals.guidedControllerFlyView.nightLightToggle,
-                null,
+                globals.guidedControllerFlyView.actionNightLight,
+                !_activeVehicle.servo.nightLight.value,
                 null,
                 null
             )

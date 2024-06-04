@@ -23,17 +23,15 @@ Item {
     anchors.top:    parent.top
     anchors.bottom: parent.bottom
 
-    property var _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
-
-    property bool showIndicator:  true
-    property bool dayLightState: _activeVehicle.dayLightState()
+    property var _activeVehicle:    QGroundControl.multiVehicleManager.activeVehicle
+    property bool showIndicator:    true
+    property bool _dayLightEnabled: _activeVehicle ? _activeVehicle.servo.dayLight.value : false
 
     Row {
         id:             dayLightRow
         anchors.top:    parent.top
         anchors.bottom: parent.bottom
         spacing:        ScreenTools.defaultFontPixelWidth
-
         QGCColoredImage {
             width:              height
             anchors.top:        parent.top
@@ -42,10 +40,7 @@ Item {
             source:             "/qmlimages/SimpleLight.png"
             fillMode:           Image.PreserveAspectFit
             color: {
-                const state = _activeVehicle.dayLightState();
-                console.log(state)
-
-                if (state) {
+                if (_activeVehicle.servo.dayLight.value) {
                     return "yellow"
                 }
 
@@ -58,15 +53,11 @@ Item {
         anchors.fill:   parent
         onClicked: {
             globals.guidedControllerFlyView.executeAction(
-                globals.guidedControllerFlyView.dayLightToggle,
-                null,
+                globals.guidedControllerFlyView.actionDayLight,
+                !_activeVehicle.servo.dayLight.value,
                 null,
                 null
             )
-
-            console.log('after click');
-            console.log(_activeVehicle.dayLightState());
-
         }
     }
 }

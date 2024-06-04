@@ -100,6 +100,7 @@ const char* Vehicle::_hobbsFactName =               "hobbs";
 const char* Vehicle::_throttlePctFactName =         "throttlePct";
 const char* Vehicle::_imuTempFactName =             "imuTemp";
 
+const char* Vehicle::_servoFactGroupName =              "servo";
 const char* Vehicle::_gpsFactGroupName =                "gps";
 const char* Vehicle::_gps2FactGroupName =               "gps2";
 const char* Vehicle::_windFactGroupName =               "wind";
@@ -166,6 +167,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _hobbsFact                    (0, _hobbsFactName,             FactMetaData::valueTypeString)
     , _throttlePctFact              (0, _throttlePctFactName,       FactMetaData::valueTypeUint16)
     , _imuTempFact                  (0, _imuTempFactName,           FactMetaData::valueTypeInt16)
+    , _servoFactGroup               (this)
     , _gpsFactGroup                 (this)
     , _gps2FactGroup                (this)
     , _windFactGroup                (this)
@@ -317,6 +319,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _hobbsFact                        (0, _hobbsFactName,             FactMetaData::valueTypeString)
     , _throttlePctFact                  (0, _throttlePctFactName,       FactMetaData::valueTypeUint16)
     , _imuTempFact                      (0, _imuTempFactName,           FactMetaData::valueTypeInt16)
+    , _servoFactGroup                   (this)
     , _gpsFactGroup                     (this)
     , _gps2FactGroup                    (this)
     , _windFactGroup                    (this)
@@ -458,6 +461,7 @@ void Vehicle::_commonInit()
     _hobbsFact.setRawValue(QVariant(QString("0000:00:00")));
     _addFact(&_hobbsFact,               _hobbsFactName);
 
+    _addFactGroup(&_servoFactGroup,             _servoFactGroupName);
     _addFactGroup(&_gpsFactGroup,               _gpsFactGroupName);
     _addFactGroup(&_gps2FactGroup,              _gps2FactGroupName);
     _addFactGroup(&_windFactGroup,              _windFactGroupName);
@@ -717,8 +721,8 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     case MAVLINK_MSG_ID_GPS_RAW_INT:
         _handleGpsRawInt(message);
         break;
-    case MAVLINK_MSG_ID_SERVO_OUTPUT_RAW:
-        _handleServoOutputRaw(message);
+    // case MAVLINK_MSG_ID_SERVO_OUTPUT_RAW:
+    //     _handleServoOutputRaw(message);
     case MAVLINK_MSG_ID_GLOBAL_POSITION_INT:
         _handleGlobalPositionInt(message);
         break;
@@ -1852,41 +1856,41 @@ void Vehicle::_handleRadioStatus(mavlink_message_t& message)
     }
 }
 
-void Vehicle::_handleServoOutputRaw(mavlink_message_t& message)
-{
-    mavlink_servo_output_raw_t packet;
+// void Vehicle::_handleServoOutputRaw(mavlink_message_t& message)
+// {
+//     mavlink_servo_output_raw_t packet;
 
-    mavlink_msg_servo_output_raw_decode(&message, &packet);
+//     mavlink_msg_servo_output_raw_decode(&message, &packet);
 
-    const int cMaxServoPackets = ServoControl::cMaxServoPackets;
+//     const int cMaxServoPackets = ServoControl::cMaxServoPackets;
 
-    uint16_t* _rgChannelvalues[cMaxServoPackets] = {
-        &packet.servo1_raw,
-        &packet.servo2_raw,
-        &packet.servo3_raw,
-        &packet.servo4_raw,
-        &packet.servo5_raw,
-        &packet.servo6_raw,
-        &packet.servo7_raw,
-        &packet.servo8_raw,
-        &packet.servo9_raw,
-        &packet.servo10_raw,
-        &packet.servo11_raw,
-        &packet.servo12_raw,
-        &packet.servo13_raw,
-        &packet.servo14_raw,
-        &packet.servo15_raw,
-        &packet.servo16_raw
-    };
-    int pwmServoValues[cMaxServoPackets];
+//     uint16_t* _rgChannelvalues[cMaxServoPackets] = {
+//         &packet.servo1_raw,
+//         &packet.servo2_raw,
+//         &packet.servo3_raw,
+//         &packet.servo4_raw,
+//         &packet.servo5_raw,
+//         &packet.servo6_raw,
+//         &packet.servo7_raw,
+//         &packet.servo8_raw,
+//         &packet.servo9_raw,
+//         &packet.servo10_raw,
+//         &packet.servo11_raw,
+//         &packet.servo12_raw,
+//         &packet.servo13_raw,
+//         &packet.servo14_raw,
+//         &packet.servo15_raw,
+//         &packet.servo16_raw
+//     };
+//     int pwmServoValues[cMaxServoPackets];
 
-    for (int i=0; i<cMaxServoPackets; i++) {
-        uint16_t channelValue = *_rgChannelvalues[i];
-        pwmServoValues[i] = channelValue == UINT16_MAX ? -1 : channelValue;
-    }
+//     for (int i=0; i<cMaxServoPackets; i++) {
+//         uint16_t channelValue = *_rgChannelvalues[i];
+//         pwmServoValues[i] = channelValue == UINT16_MAX ? -1 : channelValue;
+//     }
 
-    emit servoChannelsChanged(pwmServoValues);
-}
+//     emit servoChannelsChanged(pwmServoValues);
+// }
 
 void Vehicle::_handleRCChannels(mavlink_message_t& message)
 {
@@ -2158,24 +2162,14 @@ void Vehicle::resetErrorLevelMessages()
     }
 }
 
-bool Vehicle::nightLightState()
+void Vehicle::setDayLightEnabled(bool enabled)
 {
-    return _servoControl->nightLightState();
+    _servoControl->setDayLightEnabled(enabled, _defaultComponentId);
 }
 
-bool Vehicle::dayLightState()
+void Vehicle::setNightLightEnabled(bool enabled)
 {
-    return _servoControl->dayLightState();
-}
-
-void Vehicle::toggleDayLight()
-{
-    _servoControl->toggleDayLight(_defaultComponentId);
-}
-
-void Vehicle::toggleNightLight()
-{
-    _servoControl->toggleNightLight(_defaultComponentId);
+    _servoControl->setNightLightEnabled(enabled, _defaultComponentId);
 }
 
 // this function called in three cases:
@@ -3045,8 +3039,6 @@ void Vehicle::sendMavCommand(int compId, MAV_CMD command, bool showError, float 
 
 void Vehicle::sendCommand(int compId, int command, bool showError, double param1, double param2, double param3, double param4, double param5, double param6, double param7)
 {
-    std::cout << "send command " << command << std::endl;
-
     sendMavCommand(
                 compId, static_cast<MAV_CMD>(command),
                 showError,
