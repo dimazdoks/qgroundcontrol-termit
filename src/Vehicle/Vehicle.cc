@@ -1856,42 +1856,6 @@ void Vehicle::_handleRadioStatus(mavlink_message_t& message)
     }
 }
 
-// void Vehicle::_handleServoOutputRaw(mavlink_message_t& message)
-// {
-//     mavlink_servo_output_raw_t packet;
-
-//     mavlink_msg_servo_output_raw_decode(&message, &packet);
-
-//     const int cMaxServoPackets = ServoControl::cMaxServoPackets;
-
-//     uint16_t* _rgChannelvalues[cMaxServoPackets] = {
-//         &packet.servo1_raw,
-//         &packet.servo2_raw,
-//         &packet.servo3_raw,
-//         &packet.servo4_raw,
-//         &packet.servo5_raw,
-//         &packet.servo6_raw,
-//         &packet.servo7_raw,
-//         &packet.servo8_raw,
-//         &packet.servo9_raw,
-//         &packet.servo10_raw,
-//         &packet.servo11_raw,
-//         &packet.servo12_raw,
-//         &packet.servo13_raw,
-//         &packet.servo14_raw,
-//         &packet.servo15_raw,
-//         &packet.servo16_raw
-//     };
-//     int pwmServoValues[cMaxServoPackets];
-
-//     for (int i=0; i<cMaxServoPackets; i++) {
-//         uint16_t channelValue = *_rgChannelvalues[i];
-//         pwmServoValues[i] = channelValue == UINT16_MAX ? -1 : channelValue;
-//     }
-
-//     emit servoChannelsChanged(pwmServoValues);
-// }
-
 void Vehicle::_handleRCChannels(mavlink_message_t& message)
 {
     mavlink_rc_channels_t channels;
