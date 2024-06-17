@@ -1152,7 +1152,7 @@ private:
     QTimer              _csvLogTimer;
     QFile               _csvLogFile;
 
-    bool            _joystickEnabled   = false;
+    bool _joystickEnabled = false;
 
     UAS* _uas = nullptr;
 
