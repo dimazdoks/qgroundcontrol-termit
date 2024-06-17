@@ -1000,7 +1000,6 @@ signals:
     ///     @param channelCount Number of available channels, cMaxRcChannels max
     ///     @param pwmValues -1 signals channel not available
     void rcChannelsChanged              (int channelCount, int pwmValues[cMaxRcChannels]);
-    // void servoChannelsChanged           (int pwmServoValues[ServoControl::cMaxServoPackets]);
     
     /// Remote control RSSI changed  (0% - 100%)
     void remoteControlRSSIChanged       (uint8_t rssi);
