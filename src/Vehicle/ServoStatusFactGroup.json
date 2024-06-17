@@ -1,0 +1,19 @@
+{
+    "version":  1,
+    "fileType": "FactMetaData",
+    "QGC.MetaData.Facts":
+[
+{
+    "name":         "dayLight",
+    "shortDesc":    "Status of day light",
+    "type":         "bool",
+    "default":      false
+},
+{
+    "name":         "nightLight",
+    "shortDesc":    "Status of night light",
+    "type":         "bool",
+    "default":      false
+}
+]
+}

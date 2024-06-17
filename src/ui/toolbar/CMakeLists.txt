@@ -6,6 +6,8 @@ add_custom_target(UiToolbarQml
 		GPSIndicator.qml
 		GPSRTKIndicator.qml
 		JoystickIndicator.qml
+		DayLightActions.qml
+		NightLightActions.qml
 		LinkIndicator.qml
 		MainStatusIndicator.qml
 		MainToolBarIndicators.qml

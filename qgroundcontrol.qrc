@@ -8,6 +8,8 @@
         <file alias="GPSIndicator.qml">src/ui/toolbar/GPSIndicator.qml</file>
         <file alias="GPSRTKIndicator.qml">src/ui/toolbar/GPSRTKIndicator.qml</file>
         <file alias="JoystickIndicator.qml">src/ui/toolbar/JoystickIndicator.qml</file>
+		<file alias="DayLightActions.qml">src/ui/toolbar/DayLightActions.qml</file>
+		<file alias="NightLightActions.qml">src/ui/toolbar/NightLightActions.qml</file>
         <file alias="LinkIndicator.qml">src/ui/toolbar/LinkIndicator.qml</file>
         <file alias="MainToolBarIndicators.qml">src/ui/toolbar/MainToolBarIndicators.qml</file>
         <file alias="MessageIndicator.qml">src/ui/toolbar/MessageIndicator.qml</file>
@@ -336,6 +338,7 @@
         <file alias="Vehicle/EscStatusFactGroup.json">src/Vehicle/EscStatusFactGroup.json</file>
         <file alias="Vehicle/EstimatorStatusFactGroup.json">src/Vehicle/EstimatorStatusFactGroup.json</file>
         <file alias="Vehicle/GPSFact.json">src/Vehicle/GPSFact.json</file>
+        <file alias="Vehicle/ServoStatusFactGroup.json">src/Vehicle/ServoStatusFactGroup.json</file>
         <file alias="Vehicle/GPSRTKFact.json">src/Vehicle/GPSRTKFact.json</file>
         <file alias="Vehicle/SetpointFact.json">src/Vehicle/SetpointFact.json</file>
         <file alias="Vehicle/LocalPositionFact.json">src/Vehicle/LocalPositionFact.json</file>

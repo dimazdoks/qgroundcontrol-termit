@@ -6,6 +6,7 @@
  * COPYING.md in the root of the source code directory.
  *
  ****************************************************************************/
+#include<iostream>
 
 #include <QTime>
 #include <QDateTime>
@@ -99,6 +100,7 @@ const char* Vehicle::_hobbsFactName =               "hobbs";
 const char* Vehicle::_throttlePctFactName =         "throttlePct";
 const char* Vehicle::_imuTempFactName =             "imuTemp";
 
+const char* Vehicle::_servoFactGroupName =              "servo";
 const char* Vehicle::_gpsFactGroupName =                "gps";
 const char* Vehicle::_gps2FactGroupName =               "gps2";
 const char* Vehicle::_windFactGroupName =               "wind";
@@ -165,6 +167,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _hobbsFact                    (0, _hobbsFactName,             FactMetaData::valueTypeString)
     , _throttlePctFact              (0, _throttlePctFactName,       FactMetaData::valueTypeUint16)
     , _imuTempFact                  (0, _imuTempFactName,           FactMetaData::valueTypeInt16)
+    , _servoFactGroup               (this)
     , _gpsFactGroup                 (this)
     , _gps2FactGroup                (this)
     , _windFactGroup                (this)
@@ -316,6 +319,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _hobbsFact                        (0, _hobbsFactName,             FactMetaData::valueTypeString)
     , _throttlePctFact                  (0, _throttlePctFactName,       FactMetaData::valueTypeUint16)
     , _imuTempFact                      (0, _imuTempFactName,           FactMetaData::valueTypeInt16)
+    , _servoFactGroup                   (this)
     , _gpsFactGroup                     (this)
     , _gps2FactGroup                    (this)
     , _windFactGroup                    (this)
@@ -391,6 +395,7 @@ void Vehicle::_commonInit()
     _ftpManager                     = new FTPManager                    (this);
     _imageProtocolManager           = new ImageProtocolManager          ();
     _vehicleLinkManager             = new VehicleLinkManager            (this);
+    _servoControl                   = new ServoControl                  (this, this);
 
     connect(_standardModes, &StandardModes::modesUpdated, this, &Vehicle::flightModesChanged);
     connect(_standardModes, &StandardModes::modesUpdated, this, [this](){ Vehicle::flightModeChanged(flightMode()); });
@@ -456,6 +461,7 @@ void Vehicle::_commonInit()
     _hobbsFact.setRawValue(QVariant(QString("0000:00:00")));
     _addFact(&_hobbsFact,               _hobbsFactName);
 
+    _addFactGroup(&_servoFactGroup,             _servoFactGroupName);
     _addFactGroup(&_gpsFactGroup,               _gpsFactGroupName);
     _addFactGroup(&_gps2FactGroup,              _gps2FactGroupName);
     _addFactGroup(&_windFactGroup,              _windFactGroupName);
@@ -715,6 +721,8 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     case MAVLINK_MSG_ID_GPS_RAW_INT:
         _handleGpsRawInt(message);
         break;
+    // case MAVLINK_MSG_ID_SERVO_OUTPUT_RAW:
+    //     _handleServoOutputRaw(message);
     case MAVLINK_MSG_ID_GLOBAL_POSITION_INT:
         _handleGlobalPositionInt(message);
         break;
@@ -2116,6 +2124,16 @@ void Vehicle::resetErrorLevelMessages()
     if (prevMessagetype != _currentMessageType) {
         emit messageTypeChanged();
     }
+}
+
+void Vehicle::setDayLightEnabled(bool enabled)
+{
+    _servoControl->setDayLightEnabled(enabled, _defaultComponentId);
+}
+
+void Vehicle::setNightLightEnabled(bool enabled)
+{
+    _servoControl->setNightLightEnabled(enabled, _defaultComponentId);
 }
 
 // this function called in three cases:

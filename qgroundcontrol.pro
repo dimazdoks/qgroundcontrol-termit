@@ -397,6 +397,7 @@ INCLUDEPATH += \
     src/Geo \
     src/GPS \
     src/Joystick \
+    src/Servo \
     src/PlanView \
     src/MissionManager \
     src/PositionManager \
@@ -588,6 +589,7 @@ HEADERS += \
     src/Compression/QGCZlib.h \
     src/FirmwarePlugin/PX4/px4_custom_mode.h \
     src/FollowMe/FollowMe.h \
+    src/Servo/ServoControl.h \
     src/Joystick/Joystick.h \
     src/Joystick/JoystickManager.h \
     src/Joystick/JoystickMavCommand.h \
@@ -739,6 +741,7 @@ HEADERS += \
     src/Vehicle/VehicleLocalPositionSetpointFactGroup.h \
     src/Vehicle/VehicleGPSFactGroup.h \
     src/Vehicle/VehicleGPS2FactGroup.h \
+    src/Vehicle/VehicleServoFactGroup.h \
     src/Vehicle/VehicleLinkManager.h \
     src/Vehicle/VehicleSetpointFactGroup.h \
     src/Vehicle/VehicleTemperatureFactGroup.h \
@@ -856,6 +859,7 @@ SOURCES += \
     src/KMLDomDocument.cc \
     src/KMLHelper.cc \
     src/LogCompressor.cc \
+    src/Servo/ServoControl.cc \
     src/MissionManager/CameraCalc.cc \
     src/MissionManager/CameraSection.cc \
     src/MissionManager/CameraSpec.cc \
@@ -995,6 +999,7 @@ SOURCES += \
     src/Vehicle/VehicleEstimatorStatusFactGroup.cc \
     src/Vehicle/VehicleLocalPositionFactGroup.cc \
     src/Vehicle/VehicleLocalPositionSetpointFactGroup.cc \
+    src/Vehicle/VehicleServoFactGroup.cc \
     src/Vehicle/VehicleGPSFactGroup.cc \
     src/Vehicle/VehicleGPS2FactGroup.cc \
     src/Vehicle/VehicleLinkManager.cc \

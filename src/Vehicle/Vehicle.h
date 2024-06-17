@@ -33,6 +33,7 @@
 #include "VehicleLocalPositionSetpointFactGroup.h"
 #include "VehicleWindFactGroup.h"
 #include "VehicleGPSFactGroup.h"
+#include "VehicleServoFactGroup.h"
 #include "VehicleGPS2FactGroup.h"
 #include "VehicleSetpointFactGroup.h"
 #include "VehicleTemperatureFactGroup.h"
@@ -49,6 +50,7 @@
 #include "HealthAndArmingCheckReport.h"
 #include "TerrainQuery.h"
 #include "StandardModes.h"
+#include "ServoControl.h"
 #include "VehicleGeneratorFactGroup.h"
 #include "VehicleEFIFactGroup.h"
 
@@ -311,6 +313,7 @@ public:
     Q_PROPERTY(Fact* throttlePct        READ throttlePct        CONSTANT)
     Q_PROPERTY(Fact* imuTemp            READ imuTemp            CONSTANT)
 
+    Q_PROPERTY(FactGroup*           servo           READ servoFactGroup             CONSTANT)
     Q_PROPERTY(FactGroup*           gps             READ gpsFactGroup               CONSTANT)
     Q_PROPERTY(FactGroup*           gps2            READ gps2FactGroup              CONSTANT)
     Q_PROPERTY(FactGroup*           wind            READ windFactGroup              CONSTANT)
@@ -488,8 +491,12 @@ public:
 
     void updateFlightDistance(double distance);
 
+    Q_INVOKABLE void setDayLightEnabled   (bool enabled);
+    Q_INVOKABLE void setNightLightEnabled (bool enabled);
+
     bool joystickEnabled            () const;
-    void setJoystickEnabled         (bool enabled);
+    // void setJoystickEnabled         (bool enabled);
+    Q_INVOKABLE void setJoystickEnabled (bool enabled);
     void sendJoystickDataThreadSafe (float roll, float pitch, float yaw, float thrust, quint16 buttons);
 
     // Property accesors
@@ -705,6 +712,7 @@ public:
     Fact* throttlePct                       () { return &_throttlePctFact; }
     Fact* imuTemp                           () { return &_imuTempFact; }
 
+    FactGroup* servoFactGroup               () { return &_servoFactGroup; }
     FactGroup* gpsFactGroup                 () { return &_gpsFactGroup; }
     FactGroup* gps2FactGroup                () { return &_gps2FactGroup; }
     FactGroup* windFactGroup                () { return &_windFactGroup; }
@@ -992,7 +1000,7 @@ signals:
     ///     @param channelCount Number of available channels, cMaxRcChannels max
     ///     @param pwmValues -1 signals channel not available
     void rcChannelsChanged              (int channelCount, int pwmValues[cMaxRcChannels]);
-
+    
     /// Remote control RSSI changed  (0% - 100%)
     void remoteControlRSSIChanged       (uint8_t rssi);
 
@@ -1072,6 +1080,7 @@ private:
     void _handleCurrentMode             (mavlink_message_t& message);
     void _handleRadioStatus             (mavlink_message_t& message);
     void _handleRCChannels              (mavlink_message_t& message);
+    // void _handleServoOutputRaw          (mavlink_message_t& message);
     void _handleBatteryStatus           (mavlink_message_t& message);
     void _handleSysStatus               (mavlink_message_t& message);
     void _handleExtendedSysState        (mavlink_message_t& message);
@@ -1142,7 +1151,7 @@ private:
     QTimer              _csvLogTimer;
     QFile               _csvLogFile;
 
-    bool            _joystickEnabled = false;
+    bool _joystickEnabled = false;
 
     UAS* _uas = nullptr;
 
@@ -1413,6 +1422,7 @@ private:
     Fact _throttlePctFact;
     Fact _imuTempFact;
 
+    VehicleServoFactGroup           _servoFactGroup;
     VehicleGPSFactGroup             _gpsFactGroup;
     VehicleGPS2FactGroup            _gps2FactGroup;
     VehicleWindFactGroup            _windFactGroup;
@@ -1443,6 +1453,7 @@ private:
     Actuators*                      _actuators                  = nullptr;
     RemoteIDManager*                _remoteIDManager            = nullptr;
     StandardModes*                  _standardModes              = nullptr;
+    ServoControl*                   _servoControl               = nullptr;
 
     static const char* _rollFactName;
     static const char* _pitchFactName;
@@ -1473,6 +1484,7 @@ private:
     static const char* _throttlePctFactName;
     static const char* _imuTempFactName;
 
+    static const char* _servoFactGroupName;
     static const char* _gpsFactGroupName;
     static const char* _gps2FactGroupName;
     static const char* _windFactGroupName;
