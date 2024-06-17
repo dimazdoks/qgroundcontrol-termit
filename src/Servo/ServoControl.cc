@@ -15,8 +15,8 @@
 #define SERVO_PWM_ON  2000
 #define SERVO_PWM_OFF 1000
 
-#define DAY_LIGHT_SERVO   3
-#define NIGHT_LIGHT_SERVO 11
+#define DAY_LIGHT_SERVO   11
+#define NIGHT_LIGHT_SERVO 3
 
 
 ServoControl::ServoControl(QObject *parent, Vehicle *vehicle)

@@ -14,8 +14,8 @@
 #include "Vehicle.h"
 #include "QGCGeo.h"
 
-#define DAY_LIGHT_SERVO   3
-#define NIGHT_LIGHT_SERVO 11
+#define DAY_LIGHT_SERVO   11
+#define NIGHT_LIGHT_SERVO 3
 #define PWM_VALUE         1500
 
 const char* VehicleServoFactGroup::_dayLightFactName   = "dayLight";
