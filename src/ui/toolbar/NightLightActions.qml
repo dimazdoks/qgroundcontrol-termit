@@ -42,7 +42,7 @@ Item {
             fillMode:           Image.PreserveAspectFit
             color: {
                 if (_activeVehicle.servo.nightLight.value) {
-                    return "yellow"
+                    return "red"
                 }
 
                 return qgcPal.buttonText
